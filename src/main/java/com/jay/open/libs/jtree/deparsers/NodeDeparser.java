@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class NodeDeparser<T extends Node>{
     protected EntriesStorer entriesStorer = null;
     protected final FieldMappingFieldsAware fieldMappingFieldsAware;
     protected final GetterMethodsAware getterMethodsAware;
-    protected List<T> nodes = null;
+    protected Collection<T> nodes = null;
 
     public NodeDeparser(Class<T> clazz){
         Assert.notNull(clazz);
@@ -62,7 +63,7 @@ public class NodeDeparser<T extends Node>{
         return null;
     }
 
-    public void deparseAndStoreNodes(List<T> nodes){
+    public void deparseAndStoreNodes(Collection<T> nodes){
         Assert.notNull(nodes);
         this.nodes = nodes;
         for(T node:this.nodes){

@@ -6,6 +6,7 @@ import com.jay.open.libs.jtree.deparsers.NodeDeparser;
 import com.jay.open.libs.common.validate.Assert;
 import com.jay.open.libs.jtree.Node;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public abstract class AbstractTreeStorage implements TreeStorage{
         Assert.notNull(entriesStorer);
         nodeDeparser.bindEntriesStorer(entriesStorer);
 
-        List<Node> nodes = tree.getAllNodesList();
+        Collection<Node> nodes = tree.getAllNodesList();
         nodeDeparser.deparseAndStoreNodes(nodes);
     }
 
