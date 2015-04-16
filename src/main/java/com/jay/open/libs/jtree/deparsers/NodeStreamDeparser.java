@@ -7,6 +7,7 @@ import com.jay.open.libs.jtree.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class NodeStreamDeparser<T extends Node> extends NodeDeparser<T> {
     }
 
     @Override
-    public void deparseAndStoreNodes(List<T> nodes){
+    public void deparseAndStoreNodes(Collection<T> nodes){
         try{
             this.entriesStorerStream.openStream();
             super.deparseAndStoreNodes(nodes);

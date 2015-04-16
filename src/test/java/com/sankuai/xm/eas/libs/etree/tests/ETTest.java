@@ -136,11 +136,11 @@ public class ETTest {
 
     public static void main(String[] args)throws Exception{
 
-        //testStringEntriesReader();
-        //testJSONEntriesLoader();
+        testStringEntriesReader();
+        testJSONEntriesLoader();
         //counter.showElapse();
         //testClassA();
         //System.out.println(StringParser.parseString("123",Character.class).getClass());
-        testDBEntriesLoader();
+        //testDBEntriesLoader();
     }
 }
