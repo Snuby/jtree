@@ -1,7 +1,7 @@
 package com.jay.open.libs.jtree;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -23,9 +23,9 @@ public interface Tree extends Serializable {
 
     public boolean isOffspringOf(long child,long ancestor);
 
-    public List<Node> getAllNodesList();
+    public Collection<Node> getAllNodesList();
 
     public Map<Long,Node> getAllNodesMap();
 
-    public List<Node> getOffspringNodes(Node node,boolean includeSelf);
+    public Collection<Node> getOffspringNodes(Node node,boolean includeSelf);
 }

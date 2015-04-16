@@ -21,18 +21,21 @@ public class SQLTreeFactory extends AbstractTreeFactory {
     private SQLEntriesLoaderStream loaderStream;
     private NodeStreamParser nodeStreamParser;
 
+    private DataSource dataSource;
+    private String sql;
+
     public SQLTreeFactory(Class<? extends Tree> treeClazz, Class<? extends Node> nodeClazz) {
         super(treeClazz, nodeClazz);
     }
 
     public void setDataSource(DataSource dataSource) {
         Assert.notNull(dataSource);
-        loaderStream.setDataSource(dataSource);
+        this.dataSource = dataSource;
     }
 
     public void switchSQL(String sql){
         Assert.notNull(sql);
-        this.loaderStream.switchSQL(sql);
+        this.sql = sql;
     }
 
     @Override
@@ -45,5 +48,13 @@ public class SQLTreeFactory extends AbstractTreeFactory {
     protected NodeParser getNodeParser(Class<? extends Node> nodeClazz) {
         nodeStreamParser = new NodeStreamParser(nodeClazz);
         return nodeStreamParser;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void processBeforeBuildTree() {
+        //To change body of implemented methods use File | Settings | File Templates.
+        super.processBeforeBuildTree();
+        this.loaderStream.setDataSource(dataSource);
+        this.loaderStream.switchSQL(sql);
     }
 }

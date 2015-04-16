@@ -27,11 +27,22 @@ public class ETTest {
         @FieldMapping(target = "parent_id")
         private long pid;
 
+        @FieldMapping(target = "id")
+        private long id;
+
         @FieldMapping
         private String name;
 
         @FieldMapping(target = "name_path")
         private String namePath;
+
+        public long getId(){
+            return id;
+        }
+
+        public void setId(long id){
+            this.id = id;
+        }
 
         public long getPid() {
             return pid;
@@ -60,8 +71,8 @@ public class ETTest {
 
 
     public static void testStringEntriesReader(){
-        String text = "org_id:2  parent_id:1\n" +
-                "org_id:213 parent_id:2";
+        String text = "id:2  parent_id:1\n" +
+                "id:213 parent_id:2";
         String text2 = "id:2  pid:1 \n" +
                 "id:213 pid:2 \n";
 
@@ -70,9 +81,8 @@ public class ETTest {
         treeFactory.setRootId(1);
 
         Tree tree = treeFactory.buildTree();
-        DefaultNode root = (DefaultNode)tree.getRoot();
 
-        System.out.println(root.getId() + ";" + root.getPid());
+        System.out.println(tree.toString());
         System.out.println("end");
 
         StringTreeStorage storage = new StringTreeStorage();
@@ -87,7 +97,6 @@ public class ETTest {
         MySqlDataSource mds = new MySqlDataSource();
         sqlTreeFactory.setDataSource(mds);
         sqlTreeFactory.setRootId(0);
-
         sqlTreeFactory.switchSQL("select * from org where status=1 and parent_id!=99999 and id_path like '0-1%'");
 
         DefaultTree tree = (DefaultTree) sqlTreeFactory.buildTree();
@@ -102,11 +111,11 @@ public class ETTest {
     public static void testJSONEntriesLoader(){
         JSONArray array = new JSONArray();
         JSONObject obj = new JSONObject();
-        obj.put("org_id","2");
+        obj.put("id","2");
         obj.put("parent_id","1");
         array.add(obj);
         obj = new JSONObject();
-        obj.put("org_id","23");
+        obj.put("id","23");
         obj.put("parent_id","2");
         array.add(obj);
 
@@ -115,10 +124,9 @@ public class ETTest {
         treeFactory.setJsonArray(array);
 
         Tree tree = treeFactory.buildTree();
-        A root = (A)tree.getRoot();
 
-        //System.out.println(root.getId() + ";" + root.getPid());
-        //System.out.println("end");
+        System.out.println(tree.toString());
+        System.out.println("end");
 
         JSONTreeStorage storage = new JSONTreeStorage();
         storage.storeTree(tree,A.class);
@@ -128,14 +136,11 @@ public class ETTest {
 
     public static void main(String[] args)throws Exception{
 
-        testStringEntriesReader();
-        TimeCounter counter = new TimeCounter();
-        for(int i=0;i<1;i++){
-            //testJSONEntriesLoader();
-        }
+        //testStringEntriesReader();
+        //testJSONEntriesLoader();
         //counter.showElapse();
         //testClassA();
         //System.out.println(StringParser.parseString("123",Character.class).getClass());
-        //testDBEntriesLoader();
+        testDBEntriesLoader();
     }
 }

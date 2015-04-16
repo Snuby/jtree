@@ -4,10 +4,10 @@ import com.jay.open.libs.jtree.Node;
 import com.jay.open.libs.jtree.RootIdAware;
 import com.jay.open.libs.jtree.Tree;
 import com.jay.open.libs.jtree.TreeUtils;
+import com.jay.open.libs.jtree.exceptions.TreeFactoryException;
 import com.jay.open.libs.jtree.parsers.NodeParser;
 import com.jay.open.libs.common.io.EntriesLoader;
 import com.jay.open.libs.common.validate.Assert;
-import com.sankuai.xm.eas.libs.etree.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,12 +32,17 @@ public abstract class AbstractTreeFactory implements TreeFactory,RootIdAware {
 
     protected abstract NodeParser getNodeParser(Class<? extends Node> nodeClazz);
 
+    protected void processBeforeBuildTree(){}
+
     public AbstractTreeFactory(Class<? extends Tree> treeClazz,Class<? extends Node> nodeClazz){
         Assert.notNull(nodeClazz);
         Assert.notNull(treeClazz);
         this.nodeClazz = nodeClazz;
         this.treeClazz = treeClazz;
+    }
 
+    @Override
+    public Tree buildTree() {
         entriesLoader = getEntriesLoader();
         nodeParser = getNodeParser(nodeClazz);
 
@@ -45,16 +50,18 @@ public abstract class AbstractTreeFactory implements TreeFactory,RootIdAware {
         Assert.notNull(nodeParser);
 
         nodeParser.bindEntriesLoader(entriesLoader);
-    }
 
-    @Override
-    public Tree buildTree() {
+        processBeforeBuildTree();
+
         Node root = nodeParser.parseTreeRoot(getRootId());
+        if(root==null){
+            throw new TreeFactoryException("Can't build tree! Please check you input!");
+        }
         Tree tree = null;
         try {
             tree = treeClazz.newInstance();
         } catch (Exception e) {
-            log.error(e.getMessage()+"(Please support a non-params constructor)",e);
+            log.error(e.getMessage()+"(Please support a non-params constructor for Tree.class)",e);
         }
         tree.setRoot(root);
         TreeUtils.validateTree(tree);

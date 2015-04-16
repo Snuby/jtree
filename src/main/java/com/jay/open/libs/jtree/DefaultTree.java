@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class DefaultTree implements Tree{
 
-    private Node root;
+    protected Node root;
 
     @Override
     final public Node getRoot() {
@@ -22,12 +22,22 @@ public class DefaultTree implements Tree{
         this.root = root;
     }
 
+    /**
+     * 获取指定id的节点
+     * @param offNodeId
+     * @return
+     */
     @Override
     public Node getOffspring(long offNodeId) {
         if(root.getId() == offNodeId) return root;
         return getOffspring(root,offNodeId);  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * 是否包含给定节点
+     * @param offNodeId
+     * @return
+     */
     public boolean containsOffspring(long offNodeId){
         return getOffspring(offNodeId)!=null;
     }
@@ -43,6 +53,12 @@ public class DefaultTree implements Tree{
         return null;
     }
 
+    /**
+     * 判断给定child节点的祖先是否为ancestor节点
+     * @param child
+     * @param ancestor
+     * @return
+     */
     public boolean isOffspringOf(long child,long ancestor){
         Node childNode = getOffspring(child);
         if(childNode == null) return false;
@@ -60,20 +76,23 @@ public class DefaultTree implements Tree{
     }
 
     @Override
-    public List<Node> getAllNodesList() {
+    public Collection<Node> getAllNodesList() {
         return getOffspringNodes(root,true);
     }
 
     @Override
     public Map<Long, Node> getAllNodesMap() {
-        Map<Long, Node> map = new HashMap<Long, Node>();
-        map.put(root.getId(),root);
-        getAllNodesMap(map,root);
-        return Collections.unmodifiableMap(map);  //To change body of implemented methods use File | Settings | File Templates.
+        return getOffspringNodesMap(root,true);
     }
 
+    /**
+     * 获取从node以下的所有子孙节点，以list形式返回
+     * @param node
+     * @param includeSelf 是否包含自身
+     * @return
+     */
     @Override
-    public List<Node> getOffspringNodes(Node node,boolean includeSelf) {
+    public Collection<Node> getOffspringNodes(Node node,boolean includeSelf) {
         List<Node> offspring = new ArrayList<Node>();
         if(node==null){
             return offspring;
@@ -82,25 +101,39 @@ public class DefaultTree implements Tree{
             offspring.add(node);
         }
         getOffspringNodes(offspring,node);
-        return Collections.unmodifiableList(offspring);  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.unmodifiableCollection(offspring);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    /**
+     * 获取从node以下的所有子孙节点，以map形式返回
+     * @param node
+     * @param includeSelf 是否包含自身
+     * @return
+     */
+    public Map<Long,Node> getOffspringNodesMap(Node node,boolean includeSelf){
+        Map<Long, Node> map = new HashMap<Long, Node>();
+        if(node==null){
+            return map;
+        }
+        if(includeSelf){
+            map.put(node.getId(),node);
+        }
+        getOffspringNodesMap(map,node);
+        return Collections.unmodifiableMap(map);
     }
 
     private void getOffspringNodes(List<Node> offspring,Node node){
-        if(node.isLeaf()){
-            return;
-        }
-        offspring.addAll(node.getChildrenList());
-        for(Node child:node.getChildrenList()){
+        Collection<Node> childList = node.getChildrenList();
+        offspring.addAll(childList);
+        for(Node child:childList){
             getOffspringNodes(offspring, child);
         }
     }
 
-
-    private void getAllNodesMap(Map<Long, Node> map,Node node){
+    private void getOffspringNodesMap(Map<Long, Node> map,Node node){
         Map<Long,Node> childMap = node.getChildrenMap();
         map.putAll(childMap);
         for(Long id:childMap.keySet()){
-            getAllNodesMap(map,childMap.get(id));
+            getOffspringNodesMap(map,childMap.get(id));
         }
     }
 
@@ -114,6 +147,11 @@ public class DefaultTree implements Tree{
         return builder.toString();
     }
 
+    /**
+     * 可以扩展，用于打印tree时显示节点的详细信息，默认只打印ID
+     * @param node
+     * @return
+     */
     protected String printNode(Node node){
         return ""+node.getId();
     }

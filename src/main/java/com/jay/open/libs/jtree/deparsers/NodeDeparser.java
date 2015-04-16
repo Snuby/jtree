@@ -45,7 +45,8 @@ public class NodeDeparser<T extends Node>{
             List<Entry<String,String>> entries = new ArrayList<Entry<String, String>>();
             for(String fieldName:fieldMappingFieldsAware.getAnnotatedFields()){
                 Method m = getterMethodsAware.getMethodByFieldName(fieldName);
-                String value = m.invoke(node).toString();
+                Object invoker = m.invoke(node);
+                String value = invoker==null?"":invoker.toString();
                 String key = fieldMappingFieldsAware.getAliasOfField(fieldName);
                 Entry<String,String> entry = new Entry<String, String>();
                 entry.setKey(key);
