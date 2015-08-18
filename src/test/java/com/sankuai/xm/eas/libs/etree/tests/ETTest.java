@@ -91,7 +91,7 @@ public class ETTest {
 
     }
 
-    public static void testDBEntriesLoader(){
+    /*public static void testDBEntriesLoader(){
 
         SQLTreeFactory sqlTreeFactory = new SQLTreeFactory(DefaultTree.class,A.class);
         MySqlDataSource mds = new MySqlDataSource();
@@ -106,7 +106,7 @@ public class ETTest {
         //StringTreeStorage storage = new StringTreeStorage();
         //storage.storeTree(tree,A.class);
         //System.out.println(storage.getContent());
-    }
+    }*/
 
     public static void testJSONEntriesLoader(){
         JSONArray array = new JSONArray();
