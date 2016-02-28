@@ -1,4 +1,4 @@
-package com.sankuai.xm.eas.libs.etree.tests;
+package com.jay.open.libs.etree.tests;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -91,7 +91,7 @@ public class ETTest {
 
     }
 
-    public static void testDBEntriesLoader(){
+    /*public static void testDBEntriesLoader(){
 
         SQLTreeFactory sqlTreeFactory = new SQLTreeFactory(DefaultTree.class,A.class);
         MySqlDataSource mds = new MySqlDataSource();
@@ -106,7 +106,7 @@ public class ETTest {
         //StringTreeStorage storage = new StringTreeStorage();
         //storage.storeTree(tree,A.class);
         //System.out.println(storage.getContent());
-    }
+    }*/
 
     public static void testJSONEntriesLoader(){
         JSONArray array = new JSONArray();
@@ -136,11 +136,11 @@ public class ETTest {
 
     public static void main(String[] args)throws Exception{
 
-        //testStringEntriesReader();
-        //testJSONEntriesLoader();
+        testStringEntriesReader();
+        testJSONEntriesLoader();
         //counter.showElapse();
         //testClassA();
         //System.out.println(StringParser.parseString("123",Character.class).getClass());
-        testDBEntriesLoader();
+        //testDBEntriesLoader();
     }
 }

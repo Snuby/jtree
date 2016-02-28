@@ -1,4 +1,4 @@
-package com.sankuai.xm.eas.libs.etree.tests;
+package com.jay.open.libs.etree.tests;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
